@@ -1,8 +1,19 @@
-const express = require('express')
-const postController = require('../controllers/post.controller')
+const express = require("express");
+const postController = require("../controllers/post.controller");
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+const postRouter = express.Router();
 
-const postRouter = express.Router()
 
-postRouter.post('/', postController.CreatePostController)
 
-module.exports = postRouter
+postRouter.post(
+  "/",
+  upload.single("image"),
+  postController.CreatePostController,
+);
+
+postRouter.get("/", postController.getPostController)
+
+postRouter.get("/details/:postId", postController.getPostDetailsController)
+
+module.exports = postRouter;
